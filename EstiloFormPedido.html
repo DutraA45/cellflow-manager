@@ -1,0 +1,480 @@
+<style>
+  #divObjetos {
+    position: absolute;
+    width: 800px;
+    height: 510px;
+    top: 0px;
+    left: 0px;
+  }
+
+  #divListaCliente {
+    position: absolute;
+    width: 400px;
+    height: 70px;
+    top: 0px;
+    left: 0px;
+  }
+
+  #labelListaCliente {
+    position: absolute;
+    top: 3px;
+    left: 10px;
+  }
+
+  #listaCliente {
+    position: absolute;
+    width: 380px;
+    height: 43px;
+    top: 22px;
+    left: 10px;
+  }
+
+  #divListaEstado {
+    position: absolute;
+    width: 400px;
+    height: 70px;
+    top: 0px;
+    left: 400px;
+  }
+
+  /*#labelEstado{
+      position: absolute;
+      width: 100px;
+      top: 3px;
+      left: 10px;
+    }
+    
+    #listaEstado{
+      position: absolute;
+      width: 380px;
+      height: 43px;
+      top: 22px;
+      left: 10px;
+    }
+    
+    #divListaCidade{
+      position: absolute;  
+      width: 400px;
+      height: 70px;
+      top: 70px;
+      left: 0px;
+    }
+    
+    #labelCidade{
+      position: absolute;
+      top: 3px;
+      left: 10px; 
+    }
+    
+    #listaCidade{
+      position: absolute;
+      width: 380px;
+      height: 43px;
+      top: 20px;
+      left: 10px;
+    }*/
+
+  #divListaLinha {
+    position: absolute;
+    width: 400px;
+    height: 70px;
+    top: 0px;
+    left: 400px;
+  }
+
+  #labelListaLinha {
+    position: absolute;
+    width: 100px;
+    top: 3px;
+    left: 10px;
+  }
+
+  #listaLinha {
+    position: absolute;
+    width: 380px;
+    height: 43px;
+    top: 20px;
+    left: 10px;
+  }
+
+  #divListaProduto {
+    position: absolute;
+    width: 400px;
+    height: 70px;
+    top: 80px;
+    left: 0px;
+  }
+
+  #labelProduto {
+    position: absolute;
+    top: 3px;
+    left: 10px;
+  }
+
+  #listaProduto {
+    position: absolute;
+    width: 380px;
+    height: 43px;
+    top: 20px;
+    left: 10px;
+  }
+
+  #divStatus {
+    position: absolute;
+    width: 400px;
+    height: 70px;
+    top: 85px;
+    left: 400px;
+  }
+
+  #labelStatus {
+    position: absolute;
+    width: 200px;
+    top: 0px;
+    left: 10px;
+  }
+
+  #listaStatus {
+    position: absolute;
+    width: 380px;
+    height: 43px;
+    top: 15px;
+    left: 10px;
+  }
+
+  #divDescricao {
+    position: absolute;
+    width: 800px;
+    height: 70px;
+    top: 130px;
+    left: 0px;
+  }
+
+  #iconeDescricao {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+  }
+
+  #Descricao {
+    position: absolute;
+    width: 745px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #labelDescricao {
+    position: absolute;
+    width: 100px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #divPedido {
+    position: absolute;
+    width: 200px;
+    height: 70px;
+    top: 195px;
+    left: 0px;
+  }
+
+  #iconePedido {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+  }
+
+  #Pedido {
+    position: absolute;
+    text-align: center;
+    width: 140px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #labelPedido {
+    position: absolute;
+    width: 100px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #divId {
+    position: absolute;
+    width: 200px;
+    height: 70px;
+    top: 195px;
+    left: 200px;
+  }
+
+  #iconeId {
+    position: absolute;
+    cursor: pointer;
+    top: 20px;
+    left: 5px;
+  }
+
+  #Id {
+    position: absolute;
+    text-align: center;
+    width: 140px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #labelId {
+    position: absolute;
+    width: 100px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #divData {
+    position: absolute;
+    margin-top: 0px;
+    width: 400px;
+    height: 70px;
+    top: 209px;
+    left: 400px;
+  }
+
+  #iconeData {
+    position: absolute;
+    top: 20px;
+    left: 5px;
+  }
+
+  #Data {
+    position: absolute;
+    text-align: left;
+    width: 340px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #labelData {
+    position: absolute;
+    width: 100px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #divPreco {
+    position: absolute;
+    width: 200px;
+    height: 70px;
+    top: 265px;
+    left: 0px;
+  }
+
+  #iconePreco {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+  }
+
+  #Preco {
+    position: absolute;
+    text-align: center;
+    width: 140px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #labelPreco {
+    position: absolute;
+    width: 100px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #divQtd {
+    position: absolute;
+    width: 200px;
+    height: 70px;
+    top: 265px;
+    left: 200px;
+  }
+
+  #iconeQtd {
+    position: absolute;
+    top: 20px;
+    left: 5px;
+  }
+
+  #Qtd {
+    position: absolute;
+    text-align: center;
+    width: 140px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #labelQtd {
+    position: absolute;
+    width: 100px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #divTotal {
+    position: absolute;
+    width: 200px;
+    height: 70px;
+    top: 265px;
+    left: 400px;
+  }
+
+  #iconeTotal {
+    position: absolute;
+    top: 20px;
+    left: 5px;
+  }
+
+  #Total {
+    position: absolute;
+    text-align: center;
+    width: 140px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #labelTotal {
+    position: absolute;
+    width: 100px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #divCusto {
+    position: absolute;
+    width: 200px;
+    height: 70px;
+    top: 265px;
+    left: 600px;
+  }
+
+  #iconeCusto {
+    position: absolute;
+    top: 20px;
+    left: 5px;
+  }
+
+  #Custo {
+    position: absolute;
+    text-align: center;
+    width: 140px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #labelCusto {
+    position: absolute;
+    width: 100px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #divObs {
+    position: absolute;
+    width: 800px;
+    height: 70px;
+    top: 335px;
+    left: 0px;
+  }
+
+  #iconeObs {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+  }
+
+  #Obs {
+    position: absolute;
+    width: 745px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #labelObs {
+    position: absolute;
+    width: 100px;
+    top: 15px;
+    left: 5px;
+  }
+
+  #divBtn {
+    position: absolute;
+    width: 800px;
+    height: 85px;
+    top: 419px;
+    left: 0px;
+  }
+
+  #btnLimpar {
+    position: absolute;
+    top: 25px;
+    left: 15px;
+  }
+
+  #btnPesquisar {
+    position: absolute;
+    top: 25px;
+    left: 170px;
+  }
+
+  #btnSalvar {
+    position: absolute;
+    top: 25px;
+    left: 350px;
+  }
+
+  #btnEditar {
+    position: absolute;
+    top: 25px;
+    left: 510px;
+  }
+
+  #btnExcluir {
+    position: absolute;
+    top: 25px;
+    left: 670px;
+  }
+
+  #CaixaMsg {
+    display: none;
+    position: fixed;
+    background-color: #000;
+    width: 550px;
+    left: 120px;
+    top: 100px;
+    border-radius: 7px;
+    z-index: 1;
+  }
+
+  #CaixaMsg > div {
+    background-color: #fff;
+    margin: 6px;
+  }
+
+  #CaixaMsg > div > #TituloMsg {
+    background-color: #ffff00;
+    font-size: 22px;
+    padding: 10px;
+    color: #000;
+  }
+
+  #CaixaMsg > div > #CorpoMsg {
+    background-color: #4169e1;
+    font-size: 15px;
+    padding: 15px;
+    color: #fff;
+    text-align: center;
+  }
+
+  #CaixaMsg > div > #RodapeMsg {
+    background-color: #4169e1;
+    padding: 10px;
+    text-align: center;
+  }
+</style>

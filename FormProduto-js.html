@@ -1,0 +1,293 @@
+<script>
+  var CampoListaLinha = document.getElementById("listaLinha");
+  var CampoListaProduto = document.getElementById("listaProduto");
+  var CampoTipo = document.getElementById("Tipo");
+  var CampoProduto = document.getElementById("nomeProduto");
+  var CampoQuantidade = document.getElementById("Quantidade");
+  var CampoPreco = document.getElementById("Preco");
+  var CampoDescricao = document.getElementById("Descricao");
+
+  var CaixaMsg = document.getElementById("CaixaMsg");
+  var TituloMsg = document.getElementById("TituloMsg");
+  var CorpoMsg = document.getElementById("CorpoMsg");
+  var RodapeMsg = document.getElementById("RodapeMsg");
+
+  var BtnFechar =
+    '<button class = "orange" onclick = "Fechar()" style = "cursor:pointer">' +
+    '<b><font color = "black" size = "5px">Fechar</font></b></button>';
+
+  function caixaMsgbox(m) {
+    CaixaMsg.style.display = "block";
+    TituloMsg.innerHTML = "AVISO";
+    CorpoMsg.innerHTML = m;
+
+    RodapeMsg.innerHTML = BtnFechar;
+  }
+
+  function Fechar() {
+    CaixaMsg.style.display = "none";
+  }
+
+  function MsgBoxExcluir() {
+    CaixaMsg.style.display = "block";
+    TituloMsg.innerHTML = "AVISO";
+    CorpoMsg.innerHTML = "DESEJA REALMENTE EXCLUIR?";
+
+    var BtnSim =
+      '<button class = "green" onclick = "Excluir()" style = "cursor:pointer">' +
+      '<b><font color = "black" size = "5px">Sim</font></b></button>';
+
+    var BtnNao =
+      '<button class = "red" onclick = "Fechar()" style = "cursor:pointer">' +
+      '<b><font color = "black" size = "5px">Não</font></b></button>';
+
+    RodapeMsg.innerHTML = BtnSim + BtnNao;
+  }
+
+  function Excluir() {
+    var LinhaLista = CampoListaLinha.value;
+    var ProdutoLista = CampoListaProduto.value;
+
+    if (
+      LinhaLista == "" ||
+      ProdutoLista == "" ||
+      LinhaLista == "Escolha uma Linha" ||
+      ProdutoLista == "Escolha um Produto"
+    ) {
+      var m = "CANCELADO. CAMPOS LINHA E PRODUTO NÃO PODEM SER VAZIO!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    var Dados = {
+      LinhaLista: LinhaLista,
+      ProdutoLista: ProdutoLista,
+    };
+
+    google.script.run.withSuccessHandler(Retorno).ExcluirProduto(Dados);
+
+    function Retorno(r) {
+      if (r == "EXCLUÍDO COM SUCESSO!") {
+        Limpar();
+      }
+
+      var m = r;
+      caixaMsgbox(m);
+    }
+  }
+
+  function LimparLista(Campo, Opt) {
+    while (Campo.length) {
+      Campo.remove(0);
+    }
+
+    var NovaOpcao = document.createElement("option");
+    var Texto = document.createTextNode(Opt);
+    NovaOpcao.appendChild(Texto);
+    Campo.insertBefore(NovaOpcao, Campo.lastChild);
+    Campo.options[0].disabled = true;
+  }
+
+  document.getElementById("btnLimpar").addEventListener("click", Limpar);
+
+  function Limpar() {
+    CampoListaLinha.value = "";
+    CampoProduto.value = "";
+    CampoQuantidade.value = "";
+    CampoPreco.value = "";
+    CampoDescricao.value = "";
+    CampoTipo.value = "";
+    M.updateTextFields();
+
+    var Opt = "Escolha um Produto";
+    LimparLista(CampoListaProduto, Opt);
+
+    AtualizarLinhas();
+  }
+
+  CampoListaLinha.addEventListener("input", CarregarProdutos);
+
+  function CarregarProdutos() {
+    CampoTipo.value = CampoListaLinha.value;
+    CampoProduto.value = "";
+    CampoPreco.value = "";
+    M.updateTextFields();
+
+    var Opt = "Escolha um Produto";
+    LimparLista(CampoListaProduto, Opt);
+
+    var Linha = CampoListaLinha.value;
+
+    google.script.run.withSuccessHandler(Retorno).ListaProdutos(Linha);
+
+    function Retorno(produtos) {
+      produtos.forEach(function (r) {
+        var NovaOpcao = document.createElement("option");
+        var Texto = document.createTextNode(r[0]);
+        NovaOpcao.appendChild(Texto);
+
+        CampoListaProduto.insertBefore(NovaOpcao, CampoListaProduto.lastChild);
+      });
+    }
+  }
+
+  CampoQuantidade.addEventListener("keypress", Ver);
+  CampoPreco.addEventListener("keypress", Ver);
+
+  function Ver(e) {
+    var Caracteres = String.fromCharCode(e.keyCode);
+
+    var Permitir = "[0-9,]";
+
+    if (Caracteres.match(Permitir)) {
+      return true;
+    } else {
+      e.preventDefault();
+    }
+  }
+
+  document.getElementById("btnSalvar").addEventListener("click", Salvar);
+
+  function Salvar() {
+    var Tipo = CampoTipo.value.toString().trim();
+    var Produto = CampoProduto.value.toString().trim();
+    var Descricao = CampoDescricao.value.toString().trim();
+    var Quantidade = CampoQuantidade.value.toString().trim();
+
+    var Preco = CampoPreco.value;
+
+    if (Produto == "" || Quantidade == "" || Preco == "") {
+      var m = "PRECISA PREENCHER TODOS OS CAMPOS!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    var Dados = {
+      Tipo: Tipo,
+      Produto: Produto,
+      Preco: Preco,
+      Quantidade: Quantidade,
+      Descricao: Descricao,
+    };
+
+    google.script.run.withSuccessHandler(Retorno).SalvarProduto(Dados);
+
+    function Retorno(r) {
+      if (r == "REGISTRADO COM SUCESSO!") {
+        Limpar();
+      }
+
+      var m = r;
+      caixaMsgbox(m);
+    }
+  }
+
+  function AtualizarLinhas() {
+    Opt = "Escolha um Tipo";
+    LimparLista(CampoListaLinha, Opt);
+
+    google.script.run.withSuccessHandler(Retorno).AtualizarListaLinhas();
+
+    function Retorno(linhas) {
+      linhas.forEach(function (r) {
+        var NovaOpcao = document.createElement("option");
+        var Texto = document.createTextNode(r[0]);
+        NovaOpcao.appendChild(Texto);
+        CampoListaLinha.insertBefore(NovaOpcao, CampoListaLinha.lastChild);
+      });
+    }
+  }
+
+  CampoListaProduto.addEventListener("input", Pesquisar);
+
+  function Pesquisar() {
+    var Linha = CampoListaLinha.value;
+    var Produto = CampoListaProduto.value;
+
+    CampoProduto.value = "";
+    CampoPreco.value = "";
+
+    if (Linha == "" || Linha == "Escolha uma Linha") {
+      var m = "SELECIONE UMA LINHA PARA PESQUISAR!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    if (Produto == "" || Produto == "Escolha um Produto") {
+      var m = "SELECIONE UM PRODUTO PARA PESQUISAR!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    var Dados = {
+      Linha: Linha,
+      Produto: Produto,
+    };
+
+    google.script.run.withSuccessHandler(Retorno).PesquisarProduto(Dados);
+
+    function Retorno(r) {
+      if (r == "NÃO ENCONTRADO!") {
+        var m = r;
+        caixaMsgbox(m);
+        return false;
+      }
+
+      CampoProduto.value = Produto;
+      CampoPreco.value = r.Preco;
+      CampoDescricao.value = r.Descricao; // Adicione essa linha para atualizar o campo de Descrição
+      CampoQuantidade.value = r.Quantidade; // Adicione essa linha para atualizar o campo de Quantidade
+
+      M.updateTextFields();
+    }
+  }
+
+  document.getElementById("btnEditar").addEventListener("click", Editar);
+
+  function Editar() {
+    var LinhaLista = CampoListaLinha.value;
+    var ProdutoLista = CampoListaProduto.value;
+
+    var Tipo = CampoTipo.value.toString().trim();
+    var Produto = CampoProduto.value.toString().trim();
+    var Descricao = CampoDescricao.value.toString().trim();
+    var Quantidade = CampoQuantidade.value.toString().trim();
+
+    var Preco = CampoPreco.value;
+
+    if (
+      LinhaLista == "" ||
+      ProdutoLista == "" ||
+      LinhaLista == "Escolha uma Linha" ||
+      ProdutoLista == "Escolha um Produto"
+    ) {
+      var m = "PRECISA SELECIONAR TIPO E PRODUTO!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    if (Tipo == "" || Produto == "" || Preco == "" || Quantidade == "") {
+      var m = "PRECISA PREENCHER TODOS OS CAMPOS!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    var Dados = {
+      LinhaLista: LinhaLista,
+      ProdutoLista: ProdutoLista,
+      Tipo: Tipo,
+      Produto: Produto,
+      Preco: Preco,
+      Quantidade: Quantidade,
+      Descricao: Descricao,
+    };
+
+    google.script.run.withSuccessHandler(Retorno).EditarProduto(Dados);
+
+    function Retorno(r) {
+      var m = r;
+      caixaMsgbox(m);
+      Limpar();
+    }
+  }
+</script>

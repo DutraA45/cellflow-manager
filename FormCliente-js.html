@@ -1,0 +1,386 @@
+<script>
+  var CampoListaCliente = document.getElementById("listaCliente");
+  var CampoCliente = document.getElementById("Cliente");
+  var CampoCpf = document.getElementById("Cpf");
+  var CampoContato = document.getElementById("Contato");
+  var CampoRua = document.getElementById("Rua");
+  var CampoBairro = document.getElementById("Bairro");
+  var CampoCidade = document.getElementById("Cidade");
+  var CampoEstado = document.getElementById("Estado");
+  var CampoObs = document.getElementById("Obs");
+
+  var CaixaMsg = document.getElementById("CaixaMsg");
+  var TituloMsg = document.getElementById("TituloMsg");
+  var CorpoMsg = document.getElementById("CorpoMsg");
+  var RodapeMsg = document.getElementById("RodapeMsg");
+
+  var BtnFechar =
+    '<button class = "orange" onclick = "Fechar()" style = "cursor:pointer">' +
+    '<b><font color = "black" size = "5px">Fechar</font></b></button>';
+
+  function caixaMsgbox(m) {
+    CaixaMsg.style.display = "block";
+    TituloMsg.innerHTML = "AVISO";
+    CorpoMsg.innerHTML = m;
+
+    RodapeMsg.innerHTML = BtnFechar;
+  }
+
+  function Fechar() {
+    CaixaMsg.style.display = "none";
+  }
+
+  function MsgBoxExcluir() {
+    CaixaMsg.style.display = "block";
+    TituloMsg.innerHTML = "AVISO";
+    CorpoMsg.innerHTML = "DESEJA REALMENTE EXCLUIR?";
+
+    var BtnSim =
+      '<button class = "green" onclick = "Excluir()" style = "cursor:pointer">' +
+      '<b><font color = "black" size = "5px">Sim</font></b></button>';
+
+    var BtnNao =
+      '<button class = "red" onclick = "Fechar()" style = "cursor:pointer">' +
+      '<b><font color = "black" size = "5px">Não</font></b></button>';
+
+    RodapeMsg.innerHTML = BtnSim + BtnNao;
+  }
+
+  function Excluir() {
+    var nomeCliente = CampoListaCliente.value;
+
+    if (nomeCliente == "" || nomeCliente == "Escolha um Cliente") {
+      var m = "CANCELADO. CAMPO LISTA CLIENTE NÃO PODE SER VAZIO!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    google.script.run.withSuccessHandler(Retorno).ExcluirCliente(nomeCliente);
+
+    function Retorno(r) {
+      if (r == "EXCLUÍDO COM SUCESSO!") {
+        Limpar();
+      }
+
+      var m = r;
+      caixaMsgbox(m);
+    }
+  }
+
+  document.getElementById("btnLimpar").addEventListener("click", Limpar);
+
+  function Limpar() {
+    CampoCliente.value = "";
+    CampoCpf.value = "";
+    CampoContato.value = "";
+    CampoRua.value = "";
+    CampoBairro.value = "";
+    CampoCidade.value = "";
+    CampoEstado.value = "";
+    CampoObs.value = "";
+    CampoListaCliente.value = "";
+    CampoListaCliente.disabled = false;
+
+    M.updateTextFields();
+
+    AtualizarCliente();
+  }
+
+  // CampoCpf.addEventListener('keyup',MascaraCpf);
+
+  // function MascaraCpf(e){
+
+  //   var Tecla = e.keyCode;
+
+  //   if(Tecla == 8){
+  //     return false;
+  //   }
+
+  //   var Cpf = CampoCpf.value;
+
+  //   if(Cpf.length == 2){
+  //     CampoCpf.value = Cpf + ".";
+  //     return true;
+  //   }
+
+  //   if(Cpf.length == 6){
+  //     CampoCpf.value = Cpf + ".";
+  //     return true;
+  //   }
+
+  //   if(Cpf.length == 10){
+  //     CampoCpf.value = Cpf + "/";
+  //     return true;
+  //   }
+
+  //   if(Cpf.length == 15){
+  //     CampoCpf.value = Cpf + "-";
+  //     return true;
+  //   }
+
+  // }
+
+  CampoContato.addEventListener("keyup", MascaraTelefone);
+
+  function MascaraTelefone(e) {
+    var Tecla = e.keyCode;
+
+    if (Tecla == 8) {
+      return false;
+    }
+
+    var Telefone = CampoContato.value;
+
+    if (Telefone.length == 1) {
+      CampoContato.value = "(" + Telefone;
+      return true;
+    }
+
+    if (Telefone.length == 3) {
+      CampoContato.value = Telefone + ")";
+      return true;
+    }
+
+    if (Telefone.length == 9) {
+      CampoContato.value = Telefone + "-";
+      return true;
+    }
+  }
+
+  function CaixaAlta(e) {
+    var ss = e.target.selectionStart;
+    var se = e.target.selectionEnd;
+    e.target.value = e.target.value.toUpperCase();
+    e.target.selectionStart = ss;
+    e.target.selectionEnd = se;
+  }
+
+  document.getElementById("btnSalvar").addEventListener("click", SalvarCliente);
+
+  function SalvarCliente() {
+    var Cliente = CampoCliente.value;
+    var Cpf = CampoCpf.value;
+    var Contato = CampoContato.value;
+    var Rua = CampoRua.value;
+    var Bairro = CampoBairro.value;
+    var Cidade = CampoCidade.value;
+    var Estado = CampoEstado.value;
+    var Obs = CampoObs.value;
+
+    var Cliente = Cliente.trim();
+    var Cpf = Cpf.trim();
+    var Contato = Contato.trim();
+    var Rua = Rua.trim();
+    var Bairro = Bairro.trim();
+    var Cidade = Cidade.trim();
+
+    if (
+      Cliente == "" ||
+      Cpf == "" ||
+      Contato == "" ||
+      Bairro == "" ||
+      Cidade == "" ||
+      Estado == "" ||
+      Estado == "Escolha um Estado"
+    ) {
+      var m = "PRECISA PREENCHER TODOS OS CAMPOS!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    var Dados = {
+      Cliente: Cliente,
+      Cpf: Cpf,
+      Contato: Contato,
+      Rua: Rua,
+      Bairro: Bairro,
+      Cidade: Cidade,
+      Estado: Estado,
+      Obs: Obs,
+    };
+
+    google.script.run.withSuccessHandler(Retorno).SalvarCliente(Dados);
+
+    function Retorno(r) {
+      var m = r;
+      caixaMsgbox(m);
+
+      if (r == "REGISTRADO COM SUCESSO!") {
+        Limpar();
+      }
+    }
+  }
+
+  function AtualizarCliente() {
+    while (CampoListaCliente.length) {
+      CampoListaCliente.remove(0);
+    }
+
+    var NovaOpcao = document.createElement("option");
+    var Texto = document.createTextNode("Escolha um Cliente");
+    NovaOpcao.appendChild(Texto);
+    CampoListaCliente.insertBefore(NovaOpcao, CampoListaCliente.lastChild);
+
+    CampoListaCliente.options[0].disabled = true;
+
+    google.script.run.withSuccessHandler(Retorno).AtualizarListaClientes();
+
+    function Retorno(clientes) {
+      clientes.forEach(function (r) {
+        var NovaOpcao = document.createElement("option");
+        var Texto = document.createTextNode(r[0]);
+        NovaOpcao.appendChild(Texto);
+        CampoListaCliente.insertBefore(NovaOpcao, CampoListaCliente.lastChild);
+      });
+    }
+  }
+
+  CampoListaCliente.addEventListener("input", Pesquisar);
+
+  function Pesquisar() {
+    var nomeCliente = CampoListaCliente.value;
+
+    google.script.run.withSuccessHandler(Retorno).PesquisarCliente(nomeCliente);
+
+    function Retorno(r) {
+      if (r == "CLIENTE NÃO ENCONTRADO!") {
+        Limpar();
+        var m = r;
+        caixaMsgbox(m);
+        return false;
+      }
+
+      CampoCliente.value = r[0];
+      CampoCpf.value = r[1];
+      CampoContato.value = r[2];
+      CampoRua.value = r[3];
+      CampoBairro.value = r[4];
+      CampoCidade.value = r[5];
+      CampoEstado.value = r[6];
+      CampoObs.value = r[7];
+      M.updateTextFields();
+    }
+  }
+
+  function VerificarCliente() {
+    var listaCliente = CampoListaCliente.value;
+    var nomeCliente = CampoCliente.value;
+
+    if (
+      listaCliente.trim().length != 0 &&
+      listaCliente != "Escolha um Cliente"
+    ) {
+      return false;
+    }
+
+    if (nomeCliente == "") {
+      return false;
+    }
+
+    google.script.run.withSuccessHandler(Retorno).VerificarCliente(nomeCliente);
+
+    function Retorno(r) {
+      if (r == "CLIENTE JÁ CADASTRADO!") {
+        CampoCliente.value = "";
+        M.updateTextFields();
+        var m = r;
+        caixaMsgbox(m);
+      }
+    }
+  }
+
+  document.getElementById("btnEditar").addEventListener("click", Editar);
+
+  function Editar() {
+    var nomeCliente = CampoListaCliente.value;
+    var Cliente = CampoCliente.value;
+    var Cpf = CampoCpf.value;
+    var Contato = CampoContato.value;
+    var Rua = CampoRua.value;
+    var Bairro = CampoBairro.value;
+    var Cidade = CampoCidade.value;
+    var Estado = CampoEstado.value;
+    var Obs = CampoObs.value;
+
+    var Cliente = Cliente.trim();
+    var Cpf = Cpf.trim();
+    var Contato = Contato.trim();
+    var Rua = Rua.trim();
+    var Bairro = Bairro.trim();
+    var Cidade = Cidade.trim();
+
+    if (nomeCliente == "" || nomeCliente == "Escolha um Cliente") {
+      var m = "PRECISA SELECIONAR CLIENTE NA LISTA!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    if (
+      Cliente == "" ||
+      Cpf == "" ||
+      Contato == "" ||
+      Rua == "" ||
+      Bairro == "" ||
+      Cidade == "" ||
+      Estado == ""
+    ) {
+      var m = "PRECISA PREENCHER TODOS OS CAMPOS!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    var Dados = {
+      nomeCliente: nomeCliente,
+      Cliente: Cliente,
+      Cpf: Cpf,
+      Contato: Contato,
+      Rua: Rua,
+      Bairro: Bairro,
+      Cidade: Cidade,
+      Estado: Estado,
+      Obs: Obs,
+    };
+
+    google.script.run.withSuccessHandler(Retorno).EditarCliente(Dados);
+
+    function Retorno(r) {
+      if (r != "CLIENTE NÃO ENCONTRADO!") {
+        Limpar();
+      }
+
+      var m = r;
+      caixaMsgbox(m);
+    }
+  }
+
+  window.onload = function () {
+    var Cliente = CampoListaCliente.value;
+
+    if (Cliente == "") {
+      return false;
+    }
+
+    Pesquisar();
+
+    for (var i = 1; i < CampoListaCliente.length; i++) {
+      if (CampoListaCliente.options[i].value == Cliente) {
+        CampoListaCliente.options[i].selected = true;
+        CampoListaCliente.disabled = true;
+      }
+    }
+  };
+
+  document.getElementById("iconeCliente").addEventListener("click", FormFiltro);
+
+  function FormFiltro() {
+    var Cliente = CampoListaCliente.value;
+    var Cpf = CampoCpf.value;
+    var Contato = CampoContato.value;
+    var Estado = CampoEstado.value;
+    var Cidade = CampoCidade.value;
+
+    google.script.run
+      .withSuccessHandler()
+      .FormFiltroClientes(Cliente, Cpf, Contato, Estado, Cidade);
+  }
+</script>

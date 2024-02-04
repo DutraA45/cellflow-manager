@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+
+    <?!=Chamar("EstiloFormPedido") ?>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="CaixaMsg">
+      <div>
+        <div id="TituloMsg"></div>
+        <div id="CorpoMsg"></div>
+        <div id="RodapeMsg"></div>
+      </div>
+    </div>
+
+    <div id="divObjetos">
+      <div id="divListaCliente">
+        <label id="labelListaCliente">Cliente</label>
+
+        <select id="listaCliente" class="browser-default">
+          <option value="" disabled selected>Escolha um Cliente</option>
+
+          <?for(var i = 0; i <list.length; i++){?>
+
+          <option><?=list[i];?></option>
+
+          <?}?>
+        </select>
+      </div>
+
+      <div id="divListaLinha">
+        <label id="labelListaLinha">Tipo</label>
+
+        <select id="listaLinha" class="browser-default">
+          <option value="" disabled selected>Escolha um Tipo</option>
+
+          <?for(var i = 0; i <list3.length; i++){?>
+
+          <option><?=list3[i];?></option>
+
+          <?}?>
+        </select>
+      </div>
+
+      <div id="divListaProduto">
+        <label id="labelProduto">Dispositivo</label>
+        <select id="listaProduto" class="browser-default">
+          <option value="" disabled selected>Escolha um Dispositivo</option>
+
+          <?for(var i = 0; i <list4.length; i++){?>
+
+          <option><?=list4[i];?></option>
+
+          <?}?>
+        </select>
+      </div>
+
+      <div id="divDescricao" class="input-field col s6">
+        <i id="iconeDescricao" class="material-icons prefix"
+          >add_circle_outline</i
+        >
+        <input id="Descricao" type="text" oninput="CaixaAlta(event)" />
+        <label id="labelDescricao" for="Descricao">Descriçao</label>
+      </div>
+
+      <div id="divPedido" class="input-field col s6">
+        <i id="iconePedido" class="material-icons prefix">add_circle_outline</i>
+        <input id="Pedido" type="text" />
+        <label id="labelPedido" for="Pedido">Nr. Pedido</label>
+      </div>
+
+      <div id="divId" class="input-field col s6">
+        <i id="iconeId" class="material-icons prefix">add_circle_outline</i>
+        <input id="Id" type="text" value="<?=Id?>" />
+        <label id="labelId" for="Id">ID</label>
+      </div>
+
+      <div id="divData" class="input-field col s6">
+        <i id="iconeData" class="material-icons prefix">add_circle_outline</i>
+        <input id="Data" type="date" />
+        <label id="labelData" for="Data">Data</label>
+
+        <script>
+          document.getElementById("Data").value = new Date()
+            .toISOString()
+            .substring(0, 10);
+        </script>
+      </div>
+
+      <div id="divPreco" class="input-field col s6">
+        <i id="iconePreco" class="material-icons prefix">add_circle_outline</i>
+        <input id="Preco" type="number" />
+        <label id="labelPreco" for="Preco">Preço</label>
+      </div>
+
+      <div id="divQtd" class="input-field col s6">
+        <i id="iconeQtd" class="material-icons prefix">add_circle_outline</i>
+        <input id="Qtd" type="number" />
+        <label id="labelQtd" for="Qtd">Qtd</label>
+      </div>
+
+      <div id="divTotal" class="input-field col s6">
+        <i id="iconeTotal" class="material-icons prefix">add_circle_outline</i>
+        <input id="Total" type="text" disabled="true" />
+        <label id="labelTotal" for="Total">Total</label>
+      </div>
+
+      <div id="divCusto" class="input-field col s6">
+        <i id="iconeCusto" class="material-icons prefix">add_circle_outline</i>
+        <input id="Custo" type="number" />
+        <label id="labelCusto" for="Custo">Custo</label>
+      </div>
+
+      <div id="divStatus">
+        <label id="labelStatus">Status</label>
+        <select id="listaStatus" class="browser-default">
+          <option value="" disabled selected>Escolha um Status</option>
+          <option>Finalizado</option>
+          <option>Pendente</option>
+        </select>
+      </div>
+
+      <div id="divObs" class="input-field col s6">
+        <i id="iconeObs" class="material-icons prefix">add_circle_outline</i>
+        <input id="Obs" type="text" oninput="CaixaAlta(event)" />
+        <label id="labelObs" for="Obs">Observação</label>
+      </div>
+
+      <div id="divBtn">
+        <button id="btnLimpar" class="btn waves-effect blue">
+          Limpar
+          <i class="material-icons right">send</i>
+        </button>
+
+        <button id="btnPesquisar" class="btn waves-effect brown">
+          Pesquisar
+          <i class="material-icons right">send</i>
+        </button>
+
+        <button id="btnSalvar" class="btn waves-effect green">
+          Salvar
+          <i class="material-icons right">send</i>
+        </button>
+
+        <button id="btnEditar" class="btn waves-effect orange">
+          Editar
+          <i class="material-icons right">send</i>
+        </button>
+
+        <button id="btnExcluir" class="btn waves-effect red">
+          Excluir
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <?!=Chamar("FormPedido-js") ?>
+  </body>
+</html>

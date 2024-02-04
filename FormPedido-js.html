@@ -1,0 +1,422 @@
+<script>
+  var CampoCliente = document.getElementById("listaCliente");
+  var CampoLinha = document.getElementById("listaLinha");
+  var CampoProduto = document.getElementById("listaProduto");
+  var CampoPedido = document.getElementById("Pedido");
+  var CampoId = document.getElementById("Id");
+  var CampoData = document.getElementById("Data");
+  var CampoPreco = document.getElementById("Preco");
+  var CampoQtd = document.getElementById("Qtd");
+  var CampoTotal = document.getElementById("Total");
+  var CampoStatus = document.getElementById("listaStatus");
+  var CampoObs = document.getElementById("Obs");
+  var CampoDescricao = document.getElementById("Descricao");
+  var CampoCusto = document.getElementById("Custo");
+
+  var CaixaMsg = document.getElementById("CaixaMsg");
+  var TituloMsg = document.getElementById("TituloMsg");
+  var CorpoMsg = document.getElementById("CorpoMsg");
+  var RodapeMsg = document.getElementById("RodapeMsg");
+
+  var BtnFechar =
+    '<button class = "orange" onclick = "Fechar()" style = "cursor:pointer">' +
+    '<b><font color = "black" size = "5px">Fechar</font></b></button>';
+
+  function caixaMsgbox(m) {
+    CaixaMsg.style.display = "block";
+    TituloMsg.innerHTML = "AVISO";
+    CorpoMsg.innerHTML = m;
+
+    RodapeMsg.innerHTML = BtnFechar;
+  }
+
+  function Fechar() {
+    CaixaMsg.style.display = "none";
+  }
+
+  document.addEventListener("DOMContentLoaded", IniciarFormulario);
+
+  var clientes;
+  var produtos;
+
+  function IniciarFormulario() {
+    google.script.run.withSuccessHandler(Retorno).buscaListas();
+
+    function Retorno(arrays) {
+      clientes = arrays.dadosClientes.slice();
+      produtos = arrays.dadosProdutos.slice();
+
+      if (CampoId.value != "") {
+        Pesquisar();
+      }
+    }
+  }
+
+  function LimparLista(Campo, Opt, Vazio) {
+    while (Campo.length) {
+      Campo.remove(0);
+    }
+
+    var NovaOpcao = document.createElement("option");
+    var Texto = document.createTextNode(Opt);
+    NovaOpcao.appendChild(Texto);
+    Campo.insertBefore(NovaOpcao, Campo.lastChild);
+
+    if (Vazio == "SIM") {
+      var NovaOpcao = document.createElement("option");
+      var Texto = document.createTextNode(" ");
+      NovaOpcao.appendChild(Texto);
+      Campo.insertBefore(NovaOpcao, Campo.lastChild);
+    }
+
+    Campo.options[0].disabled = true;
+  }
+
+  CampoCliente.addEventListener("change", SelectCliente);
+
+  function SelectCliente() {
+    NovoPedidoId();
+  }
+
+  function NovoPedidoId() {
+    if (CampoPedido.value != "" && CampoId.value != "") {
+      return false;
+    }
+
+    google.script.run.withSuccessHandler(Retorno).buscaPedidoId();
+
+    function Retorno(r) {
+      if (CampoPedido.value == "") {
+        CampoPedido.value = r.novoPedido;
+      }
+
+      if (CampoId.value == "") {
+        CampoId.value = r.novoId;
+        CampoId.disabled = true;
+      }
+
+      M.updateTextFields();
+    }
+  }
+
+  function CaixaAlta(e) {
+    var ss = e.target.selectionStart;
+    var se = e.target.selectionEnd;
+    e.target.value = e.target.value.toUpperCase();
+    e.target.selectionStart = ss;
+    e.target.selectionEnd = se;
+  }
+
+  CampoPreco.addEventListener("input", Total);
+  CampoQtd.addEventListener("input", Total);
+
+  function Total() {
+    CampoTotal.value = "";
+    M.updateTextFields();
+
+    var Preco = CampoPreco.value;
+    var Qtd = CampoQtd.value;
+
+    if (Preco == "" || Qtd == "") {
+      return false;
+    }
+
+    var ConvertPreco = parseFloat(Preco.replace(/\,/g, "."));
+    var ConvertQtd = parseFloat(Qtd.replace(/\,/g, "."));
+
+    var Total = parseFloat(ConvertPreco * ConvertQtd).toFixed(2);
+
+    CampoTotal.value = Total.replace(/\./g, ",");
+
+    M.updateTextFields();
+  }
+
+  function Limpar() {
+    CampoCliente.value = "";
+    CampoLinha.value = "";
+    CampoId.value = "";
+    CampoData.value = new Date().toISOString().substring(0, 10);
+    CampoQtd.value = "";
+    CampoPreco.value = "";
+    CampoTotal.value = "";
+    CampoStatus.value = "";
+    CampoObs.value = "";
+    CampoDescricao.value = "";
+    CampoProduto.value = "";
+    CampoCusto.value = "";
+    CampoPedido.disabled = false;
+    CampoId.disabled = false;
+    document.getElementById("btnSalvar").disabled = false;
+
+    var Opt = "Escolha um Dispositivo";
+    var Vazio = "NÃO";
+    //LimparLista(CampoProduto,Opt,Vazio);
+  }
+
+  document.getElementById("btnLimpar").addEventListener("click", LimparTudo);
+
+  function LimparTudo() {
+    Limpar();
+    CampoPedido.value = "";
+  }
+
+  document.getElementById("btnSalvar").addEventListener("click", Salvar);
+
+  function Salvar() {
+    var Cliente = CampoCliente.value;
+    var Linha = CampoLinha.value;
+    var Produto = CampoProduto.value;
+    var Data = CampoData.value;
+    var Id = CampoId.value;
+    var Pedido = CampoPedido.value;
+    var Descricao = CampoDescricao.value;
+
+    var Q = CampoQtd.value;
+    var Qtd = Q.replace(/\./g, ",");
+
+    var P = CampoPreco.value;
+    var Preco = P.replace(/\./g, ",");
+
+    var C = CampoCusto.value;
+    var Custo = C.replace(/\./g, ",");
+
+    var Total = CampoTotal.value;
+    var Status = CampoStatus.value;
+    var Obs = CampoObs.value;
+
+    if (
+      Cliente == "Escolha um Cliente" ||
+      Linha == "Escolha uma Linha" ||
+      Produto == "Escolha um Produto" ||
+      Status == "Escolha um Status"
+    ) {
+      var m = "PRECISA PREENCHER TODOS OS CAMPOS!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    if (
+      Cliente == "" ||
+      Linha == "" ||
+      Produto == "" ||
+      Data == "" ||
+      Id == "" ||
+      Pedido == "" ||
+      Qtd == "" ||
+      Preco == "" ||
+      Status == ""
+    ) {
+      var m = "PRECISA PREENCHER TODOS OS CAMPOS!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    if (Data.length > 0) {
+      var dataQuebrada = Data.split("-");
+      var Ano = dataQuebrada[0];
+      var Mes = dataQuebrada[1];
+      var Dia = dataQuebrada[2];
+      var Data = Ano + "/" + Mes + "/" + Dia;
+    }
+
+    var Dados = {
+      Id: Id,
+      Pedido: Pedido,
+      Data: Data,
+      Linha: Linha,
+      Produto: Produto,
+      Qtd: Qtd,
+      Preco: Preco,
+      Total: Total,
+      Cliente: Cliente,
+      Status: Status,
+      Obs: Obs,
+      Descricao: Descricao,
+      Custo: Custo,
+    };
+
+    google.script.run.withSuccessHandler(Retorno).SalvarPedido(Dados);
+
+    function Retorno(r) {
+      var m = r;
+      caixaMsgbox(m);
+      Limpar();
+    }
+  }
+
+  document.getElementById("btnPesquisar").addEventListener("click", Pesquisar);
+
+  function Pesquisar() {
+    var Id = CampoId.value;
+
+    if (Id == "") {
+      var m = "INFORME ID PARA PESQUISA!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    google.script.run.withSuccessHandler(Retorno).PesquisarPedido(Id);
+
+    function Retorno(r) {
+      if (r == "ID NÃO ENCONTRADO!") {
+        LimparTudo();
+        var m = r;
+        caixaMsgbox(m);
+        return false;
+      }
+
+      document.getElementById("btnSalvar").disabled = true;
+      CampoId.disabled = true;
+
+      CampoPedido.value = r[0];
+      CampoData.value = new Date(r[1]).toISOString().substring(0, 10);
+      CampoLinha.value = r[2];
+      CampoProduto.value = r[3];
+
+      CampoPreco.value = r[11];
+
+      CampoQtd.value = r[4];
+      CampoTotal.value = r[5];
+      CampoCusto.value = r[6];
+      CampoCliente.value = r[7];
+
+      CampoStatus.value = r[8];
+      CampoObs.value = r[9];
+      CampoDescricao.value = r[10];
+
+      M.updateTextFields();
+    }
+  }
+
+  document.getElementById("btnEditar").addEventListener("click", Editar);
+
+  function Editar() {
+    var Cliente = CampoCliente.value;
+    var Linha = CampoLinha.value;
+    var Produto = CampoProduto.value;
+    var Data = CampoData.value;
+    var Id = CampoId.value;
+    var Pedido = CampoPedido.value;
+
+    var Q = CampoQtd.value;
+    var Qtd = Q.replace(/\./g, ",");
+
+    // var P = CampoPreco.value;
+    // var Preco = P.replace(/\./g, ',');
+
+    var Total = CampoTotal.value;
+    var Custo = CampoCusto.value;
+    var Status = CampoStatus.value;
+    var Obs = CampoObs.value;
+    var Descricao = CampoDescricao.value;
+
+    if (
+      Cliente == "Escolha um Cliente" ||
+      Linha == "Escolha uma Linha" ||
+      Produto == "Escolha um Produto" ||
+      Status == "Escolha um Status"
+    ) {
+      var m = "PRECISA PREENCHER TODOS OS CAMPOS!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    if (
+      Cliente == "" ||
+      Linha == "" ||
+      Produto == "" ||
+      Data == "" ||
+      Id == "" ||
+      Pedido == "" ||
+      Qtd == "" ||
+      Preco == "" ||
+      Status == ""
+    ) {
+      var m = "PRECISA PREENCHER TODOS OS CAMPOS!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    if (Data.length > 0) {
+      var dataQuebrada = Data.split("-");
+      var Ano = dataQuebrada[0];
+      var Mes = dataQuebrada[1];
+      var Dia = dataQuebrada[2];
+      var Data = Ano + "/" + Mes + "/" + Dia;
+    }
+
+    var Dados = {
+      Id: Id,
+      Pedido: Pedido,
+      Data: Data,
+      Linha: Linha,
+      Produto: Produto,
+      Qtd: Qtd,
+      // Preco: Preco,
+      Total: Total,
+      Cliente: Cliente,
+      Status: Status,
+      Obs: Obs,
+      Descricao: Descricao,
+      Custo: Custo,
+    };
+
+    google.script.run.withSuccessHandler(Retorno).EditarPedido(Dados);
+
+    function Retorno(r) {
+      if (r == "EDITADO COM SUCESSO!") {
+        LimparTudo();
+      }
+
+      var m = r;
+      caixaMsgbox(m);
+    }
+  }
+
+  document
+    .getElementById("btnExcluir")
+    .addEventListener("click", MsgBoxExcluir);
+
+  function MsgBoxExcluir() {
+    CaixaMsg.style.display = "block";
+    TituloMsg.innerHTML = "AVISO";
+    CorpoMsg.innerHTML = "DESEJA REALMENTE EXCLUIR?";
+
+    var BtnSim =
+      '<button class = "green" onclick = "Excluir()" style = "cursor:pointer">' +
+      '<b><font color = "black" size = "5px">Sim</font></b></button>';
+
+    var BtnNao =
+      '<button class = "red" onclick = "Fechar()" style = "cursor:pointer">' +
+      '<b><font color = "black" size = "5px">Não</font></b></button>';
+
+    RodapeMsg.innerHTML = BtnSim + BtnNao;
+  }
+
+  function Excluir() {
+    var Id = CampoId.value;
+
+    if (Id == "") {
+      var m = "PRECISA ID PARA EXCLUIR!";
+      caixaMsgbox(m);
+      return false;
+    }
+
+    google.script.run.withSuccessHandler(Retorno).ExcluirPedido(Id);
+
+    function Retorno(r) {
+      if (r == "EXCLUÍDO COM SUCESSO!") {
+        LimparTudo();
+      }
+
+      var m = r;
+      caixaMsgbox(m);
+    }
+  }
+
+  document.getElementById("iconeId").addEventListener("click", FormFiltro);
+
+  function FormFiltro() {
+    google.script.run.withSuccessHandler().FormFiltroPedidos();
+  }
+</script>

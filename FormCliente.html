@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+
+    <?!=Chamar("EstiloFormCliente") ?>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="CaixaMsg">
+      <div>
+        <div id="TituloMsg"></div>
+        <div id="CorpoMsg"></div>
+        <div id="RodapeMsg"></div>
+      </div>
+    </div>
+
+    <div id="divObjetos">
+      <div id="divListaCliente">
+        <label id="labelListaCliente">Clientes</label>
+
+        <select id="listaCliente" class="browser-default">
+          <option value="<?=Cliente?>" disabled selected>
+            Escolha um Cliente
+          </option>
+
+          <? for(var i = 0; i < list.length; i ++){?>
+
+          <option><?=list[i];?></option>
+
+          <?}?>
+        </select>
+      </div>
+
+      <div id="divCliente" class="input-field col s6">
+        <i id="iconeCliente" class="material-icons prefix">account_circle</i>
+        <input
+          id="Cliente"
+          type="text"
+          oninput="CaixaAlta(event)"
+          onblur="VerificarCliente()"
+        />
+        <label id="labelCliente" for="Cliente">Cliente</label>
+      </div>
+
+      <div id="divCpf" class="input-field col s6">
+        <i id="iconeCpf" class="material-icons prefix">add_circle_outline</i>
+        <input id="Cpf" type="text" maxlength="18" class="center" />
+        <label id="labelCpf" for="Cpf">CPF</label>
+      </div>
+
+      <div id="divContato" class="input-field col s6">
+        <i id="iconeContato" class="material-icons prefix">phone</i>
+        <input id="Contato" type="text" maxlength="14" class="center" />
+        <label id="labelContato" for="Contato">Contato</label>
+      </div>
+
+      <div id="divRua" class="input-field col s6">
+        <i id="iconeRua" class="material-icons prefix">add_circle_outline</i>
+        <input id="Rua" type="text" oninput="CaixaAlta(event)" />
+        <label id="labelRua" for="Rua">Rua</label>
+      </div>
+
+      <div id="divBairro" class="input-field col s6">
+        <i id="iconeBairro" class="material-icons prefix">add_circle_outline</i>
+        <input id="Bairro" type="text" oninput="CaixaAlta(event)" />
+        <label id="labelBairro" for="Bairro">Bairro</label>
+      </div>
+
+      <div id="divCidade" class="input-field col s6">
+        <i id="iconeCidade" class="material-icons prefix">add_circle_outline</i>
+        <input id="Cidade" type="text" oninput="CaixaAlta(event)" />
+        <label id="labelCidade" for="Cidade">Cidade</label>
+      </div>
+
+      <div id="divEstado">
+        <label id="labelEstado">Estados</label>
+
+        <select id="Estado" class="browser-default">
+          <option value="" disabled selected>Escolha um Estado</option>
+
+          <?for(var i = 0; i<list2.length; i++){?>
+
+          <option><?=list2[i];?></option>
+
+          <?}?>
+        </select>
+      </div>
+
+      <div id="divObs" class="input-field col s6">
+        <i id="iconeObs" class="material-icons prefix">add_circle_outline</i>
+        <input id="Obs" type="text" oninput="CaixaAlta(event)" />
+        <label id="labelObs" for="Obs">Obs</label>
+      </div>
+
+      <div id="divBtn" class="col s12">
+        <button id="btnLimpar" class="btn waves-effect blue">
+          Limpar
+          <i class="material-icons right">send</i>
+        </button>
+
+        <button id="btnSalvar" class="btn waves-effect green">
+          Salvar
+          <i class="material-icons right">send</i>
+        </button>
+
+        <button id="btnEditar" class="btn waves-effect orange">
+          Editar
+          <i class="material-icons right">send</i>
+        </button>
+
+        <button
+          id="btnExcluir"
+          class="btn waves-effect red"
+          onclick="MsgBoxExcluir()"
+        >
+          Excluir
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <?!=Chamar("FormCliente-js") ?>
+  </body>
+</html>

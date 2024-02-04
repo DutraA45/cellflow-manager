@@ -1,0 +1,323 @@
+<style>
+  #divObjetos {
+    position: absolute;
+    width: 700px;
+    height: 470px;
+    top: 0px;
+    left: 0px;
+  }
+
+  #divListaCliente {
+    position: absolute;
+    width: 350px;
+    height: 70px;
+    top: 0px;
+    left: 0px;
+  }
+
+  #labelListaCliente {
+    position: absolute;
+    top: 0px;
+    left: 15px;
+  }
+
+  #listaCliente {
+    position: absolute;
+    width: 325px;
+    height: 30px;
+    top: 25px;
+    left: 15px;
+  }
+
+  #divCliente {
+    position: absolute;
+    margin-top: 0px;
+    width: 350px;
+    height: 70px;
+    left: 350px;
+    top: 0px;
+  }
+
+  #iconeCliente {
+    position: absolute;
+    cursor: pointer;
+    top: 30px;
+    left: 10px;
+  }
+
+  #Cliente {
+    position: absolute;
+    width: 285px;
+    height: 25px;
+    top: 30px;
+    left: 10px;
+  }
+
+  #labelCliente {
+    position: absolute;
+    width: 100px;
+    top: 10px;
+    left: 10px;
+  }
+
+  #divCpf {
+    position: absolute;
+    width: 350px;
+    height: 75px;
+    top: 55px;
+    left: 0px;
+  }
+
+  #iconeCpf {
+    position: absolute;
+    top: 30px;
+    left: 10px;
+  }
+
+  #Cpf {
+    position: absolute;
+    width: 285px;
+    height: 25px;
+    top: 30px;
+    left: 10px;
+  }
+
+  #labelCpf {
+    position: absolute;
+    width: 100px;
+    top: 20px;
+    left: 10px;
+  }
+
+  #divContato {
+    position: absolute;
+    width: 350px;
+    height: 75px;
+    top: 55px;
+    left: 350px;
+  }
+
+  #iconeContato {
+    position: absolute;
+    top: 30px;
+    left: 10px;
+  }
+
+  #Contato {
+    position: absolute;
+    width: 285px;
+    height: 25px;
+    top: 30px;
+    left: 10px;
+  }
+
+  #labelContato {
+    position: absolute;
+    width: 100px;
+    top: 20px;
+    left: 10px;
+  }
+
+  #divRua {
+    position: absolute;
+    width: 350px;
+    height: 75px;
+    top: 130px;
+    left: 0px;
+  }
+
+  #iconeRua {
+    position: absolute;
+    top: 30px;
+    left: 10px;
+  }
+
+  #Rua {
+    position: absolute;
+    width: 285px;
+    height: 25px;
+    top: 30px;
+    left: 10px;
+  }
+
+  #labelRua {
+    position: absolute;
+    width: 100px;
+    top: 20px;
+    left: 10px;
+  }
+
+  #divBairro {
+    position: absolute;
+    width: 350px;
+    height: 75px;
+    top: 130px;
+    left: 350px;
+  }
+
+  #iconeBairro {
+    position: absolute;
+    top: 30px;
+    left: 10px;
+  }
+
+  #Bairro {
+    position: absolute;
+    width: 285px;
+    height: 25px;
+    top: 30px;
+    left: 10px;
+  }
+
+  #labelBairro {
+    position: absolute;
+    width: 100px;
+    top: 20px;
+    left: 10px;
+  }
+
+  #divCidade {
+    position: absolute;
+    width: 350px;
+    height: 75px;
+    top: 205px;
+    left: 0px;
+  }
+
+  #iconeCidade {
+    position: absolute;
+    top: 30px;
+    left: 10px;
+  }
+
+  #Cidade {
+    position: absolute;
+    width: 285px;
+    height: 25px;
+    top: 30px;
+    left: 10px;
+  }
+
+  #labelCidade {
+    position: absolute;
+    width: 100px;
+    top: 20px;
+    left: 10px;
+  }
+
+  #divEstado {
+    position: absolute;
+    width: 350px;
+    height: 75px;
+    top: 219px;
+    left: 350px;
+  }
+
+  #labelEstado {
+    position: absolute;
+    width: 100px;
+    top: 5px;
+    left: 15px;
+  }
+
+  #Estado {
+    position: absolute;
+    width: 325px;
+    height: 30px;
+    top: 26px;
+    left: 15px;
+  }
+
+  #divObs {
+    position: absolute;
+    width: 700px;
+    height: 75px;
+    top: 280px;
+    left: 0px;
+  }
+
+  #iconeObs {
+    position: absolute;
+    top: 30px;
+    left: 10px;
+  }
+
+  #Obs {
+    position: absolute;
+    width: 640px;
+    left: 10px;
+    top: 15px;
+  }
+
+  #labelObs {
+    position: absolute;
+    width: 100px;
+    top: 20px;
+    left: 10px;
+  }
+
+  #divBtn {
+    position: absolute;
+    width: 700px;
+    height: 55px;
+    top: 400px;
+    left: 0px;
+  }
+
+  #btnLimpar {
+    position: absolute;
+    left: 15px;
+  }
+
+  #btnSalvar {
+    position: absolute;
+    left: 200px;
+  }
+
+  #btnEditar {
+    position: absolute;
+    left: 390px;
+  }
+
+  #btnExcluir {
+    position: absolute;
+    left: 570px;
+  }
+
+  #CaixaMsg {
+    display: none;
+    position: fixed;
+    background-color: #000;
+    width: 550px;
+    left: 100px;
+    top: 100px;
+    border-radius: 7px;
+    z-index: 1;
+  }
+
+  #CaixaMsg > div {
+    background-color: #fff;
+    margin: 6px;
+  }
+
+  #CaixaMsg > div > #TituloMsg {
+    background-color: #ffff00;
+    font-size: 22px;
+    padding: 10px;
+    color: #000;
+  }
+
+  #CaixaMsg > div > #CorpoMsg {
+    background-color: #4169e1;
+    font-size: 15px;
+    padding: 15px;
+    color: #fff;
+    text-align: center;
+  }
+
+  #CaixaMsg > div > #RodapeMsg {
+    background-color: #4169e1;
+    padding: 10px;
+    text-align: center;
+  }
+</style>
